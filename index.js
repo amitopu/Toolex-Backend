@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import { MongoClient, ServerApiVersion } from "mongodb";
+import jsonwebtoken from "jsonwebtoken";
+const jwt = jsonwebtoken;
 
 const app = express();
 app.use(cors());
@@ -28,6 +30,22 @@ const run = async () => {
         const usersCollection = client.db("toolex").collection("users");
         const ordersCollection = client.db("toolex").collection("orders");
         const reviewsCollection = client.db("toolex").collection("reviews");
+
+        app.post("/login", async (req, res) => {
+            const body = req.body;
+            console.log(body);
+            const filter = { uid: body.uid };
+            const updateDoc = {
+                $set: body,
+            };
+            const options = { upsert: true };
+            const result = await usersCollection.updateOne(
+                filter,
+                updateDoc,
+                options
+            );
+            res.send(result);
+        });
     } finally {
     }
 };
