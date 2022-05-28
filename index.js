@@ -46,6 +46,15 @@ const run = async () => {
             );
             res.send(result);
         });
+
+        app.post("/logout", async (req, res) => {
+            const loggedIn = req.body.loggedIn;
+            const uid = req.body.uid;
+            const filter = { uid };
+            const doc = { $set: { loggedIn } };
+            const result = await usersCollection.updateOne(filter, doc);
+            res.send(result);
+        });
     } finally {
     }
 };
