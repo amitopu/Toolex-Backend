@@ -132,6 +132,14 @@ const run = async () => {
             res.send(result);
         });
 
+        // api for single product
+        app.get("/product/:id", isVerified, async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await productsCollection.findOne(query);
+            res.send(result);
+        });
+
         // api for getting some product for homepage
         app.get("/homeproducts", async (req, res) => {
             const cursor = productsCollection.find();
