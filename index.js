@@ -112,6 +112,7 @@ const run = async () => {
                 updateDoc,
                 options
             );
+            // console.log(result);
             res.send(result);
         });
 
@@ -187,8 +188,28 @@ const run = async () => {
 
         // api for order
         app.post("/order", isVerified, async (req, res) => {
-            const data = req.data;
+            const data = req.body;
+            console.log(data);
             const result = await ordersCollection.insertOne(data);
+            console.log(result);
+            res.send(result);
+        });
+
+        //api to get all user orders
+        app.get("/orders/:id", isVerified, async (req, res) => {
+            const id = req.params.id;
+            const query = { userId: id };
+            const cursor = ordersCollection.find(query);
+            const result = (await cursor.toArray()).reverse();
+            console.log(result);
+            res.send(result);
+        });
+
+        // api to get all orders
+        app.get("/allorders", isVerifiedSuperAdmin, async (req, res) => {
+            const cursor = ordersCollection.find();
+            const result = (await cursor.toArray()).reverse();
+            console.log(result);
             res.send(result);
         });
     } finally {
