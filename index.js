@@ -161,7 +161,7 @@ const run = async () => {
                     .limit(size)
                     .toArray();
             } else {
-                products = (await cursor.toArray()).reverse();
+                products = await cursor.toArray();
             }
             res.send(products);
         });
