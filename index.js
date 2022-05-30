@@ -126,7 +126,7 @@ const run = async () => {
         });
 
         // api for adding a product
-        app.post("/addproduct", isVerified, async (req, res) => {
+        app.post("/addproduct", isVerifiedAdmin, async (req, res) => {
             const data = req.body;
             const result = await productsCollection.insertOne(data);
             res.send(result);
@@ -161,13 +161,13 @@ const run = async () => {
                     .limit(size)
                     .toArray();
             } else {
-                products = await cursor.toArray();
+                products = (await cursor.toArray()).reverse();
             }
             res.send(products);
         });
 
         // api for getting number of products
-        app.get("/productscount", isVerifiedAdmin, async (req, res) => {
+        app.get("/productscount", isVerified, async (req, res) => {
             const result = await productsCollection.estimatedDocumentCount();
             res.send({ count: result });
         });
